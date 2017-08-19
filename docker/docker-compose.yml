@@ -1,0 +1,46 @@
+version: '3.2'
+
+services:
+
+    mariadb_datastore:
+        image: busybox
+        container_name: mariadb_datastore
+        volumes:
+            - mariadb_datastore_volume:/var/lib/mysql
+
+    mariadb:
+        build:
+            context: ./settings/mariadb
+        container_name: mariadb
+        environment:
+            MYSQL_ROOT_PASSWORD: asdf
+        volumes:
+            - mariadb_datastore_volume:/var/lib/mysql
+        ports:
+            - "3306:3306"
+
+    nginx:
+        build:
+            context: ./settings/nginx
+        container_name: nginx
+        ports:
+            - "80:80"
+        links:
+            - php
+        volumes:
+            # コンテナを止めずに設定の反映するため
+            - './settings/nginx/settings:/home/docker/sync_folder/settings'
+
+    php:
+        build:
+            context: ./settings/php
+        container_name: php
+        volumes:
+            - '../src:/var/www/html'
+
+    composer:
+        image: composer/composer:latest
+        container_name: composer
+
+volumes:
+    mariadb_datastore_volume:
