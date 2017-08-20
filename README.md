@@ -54,8 +54,21 @@ docker exec nginx /etc/init.d/nginx reload
 ```
 
 ```bash
-# composer 関連
+# composer
 docker run --rm -v (pwd):/app composer/composer require --dev ...
+```
+
+```bash
+# artisan
+docker exec -ti php bash -c 'cd study_laravel && php artisan'
+
+# 入力補完
+docker exec -ti php bash -c 'cd study_laravel && php artisan ide-helper:generate'
+docker exec -ti php bash -c 'cd study_laravel && php artisan ide-helper:models -W'
+docker exec -ti php bash -c 'cd study_laravel && php artisan ide-helper:meta'
+
+# テスト
+docker exec -ti php bash -c 'cd study_laravel && php ./vendor/bin/phpunit'
 ```
 
 ## phpstorm

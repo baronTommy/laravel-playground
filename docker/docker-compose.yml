@@ -37,6 +37,9 @@ services:
         container_name: php
         volumes:
             - '../src:/var/www/html'
+        links:
+            # mariadbに接続時のHOST名
+            - mariadb
 
     composer:
         image: composer/composer:latest
